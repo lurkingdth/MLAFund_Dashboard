@@ -1,0 +1,181 @@
+﻿@model IEnumerable<MLAFund.Models.Data.wrkPrgReport>
+@{
+    ViewBag.Title = "Convergence Work Progress - Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@*@section bc{
+
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/convergence">convergence</a></li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+
+
+    }*@
+<ol class="breadcrumb float-sm-right">
+    <li class="breadcrumb-item">Convergence Work Progress Report</li>
+    <li class="breadcrumb-item active">@User.Identity.Name</li>
+</ol>
+
+<div class="col-md-12 col-lg-12">
+    <div class="card card-dark">
+        <div class="card-header">
+            <h3 class="card-title">Convergence Work Progress Report</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+
+
+        <div class="container-fluid my-3">
+            <table id="convergence_workprogress_report" class="table table-bordered table-striped Items table-responsive">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">Serial No.</th>
+                        <th> District </th>
+                        <th> Block </th>
+                        <th> Panchayat </th>
+                        <th> Village </th>
+                        <th> Name of Scheme </th>
+                        <th> Department Fund </th>
+                        <th> Mgnrega Fund </th>
+                        <th> WorkProgress Report</th>
+                    </tr>
+
+                </thead>
+
+                @if (Model != null)
+                {
+
+                    //  var SNo = 1;
+                    ////  var s = 0;
+                    <tbody>
+                        @{
+                            var j = 0;
+                        }
+
+                        @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                        {
+
+                            <tr data-toggle="collapse" data-target="#workprogress_data_@j" class="accordion-toggle">
+
+                                <td>@item.it</td>
+                                <td>@item.i.district</td>
+                                <td>@item.i.block</td>
+                                <td>@item.i.panchayat</td>
+                                <td>@item.i.village</td>
+                                <td>@item.i.nameofscheme</td>
+                                <td>@item.i.fundofdpt</td>
+                                <td>@item.i.fundofmgnrega</td>
+                                <td>
+                                    <button class="btn btn-primary" id="expand_workprogress_@j">Show WorkProgress</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="12" class="hidden">
+                                    <div class="accordion-body collapse" id="workprogress_data_@j">
+                                        <table class="table table-striped">
+                                            <thead class="bg-secondary">
+                                                <tr>
+                                                    <th>Latitude</th>
+                                                    <th>Longitude</th>
+                                                    <th>Address</th>
+                                                    <th>Geotag Image 1</th>
+                                                    <th>Geotag Image 2</th>
+                                                    <th>Geotag Image 3</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@item.i.latitude</td>
+                                                    <td>@item.i.longitude</td>
+                                                    <td>@item.i.address</td>
+                                                    <!--Add code for displaying pictures-->
+                                                    <td><img src="data:image/png;base64,@item.i.photo1" style="max-width: 100px; max-height: 100px" alt="photo1">
+                                                    </td><td>
+                                                     <img src="data:image/png;base64,@item.i.photo2" style="max-width: 100px; max-height: 100px" alt="photo2">
+                                                    </td><td>
+                                                     <img src="data:image/png;base64,@item.i.photo3" style="max-width: 100px; max-height: 100px" alt="photo3">
+                                                     </td>
+
+                                <!--Add code for displaying pictures-->
+                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            //Nishant : Added this for Looping
+                                j = j + 1;
+                           
+                            //  s = s + Convert.ToInt32(item.totalapp);
+                        }
+
+
+
+                    </tbody>
+                    //  Session["tapp"] =s;
+                }
+            </table>
+            
+        </div>
+
+    </div>
+</div>
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/vee-validate/vee-validate.min.js"></script>
+    <script>Vue.use(VeeValidate);</script>
+    <script src="~/Scripts/apps/convergence.js"></script>
+
+
+    <!--Nishant : Code Start: Added Code for Datatables-->
+    <script>
+        $(document).ready(function () {
+            var table = $('#convergence_workprogress_report',).DataTable({
+                //Toggle the below paging to false - to remove pagination
+                paging: true,
+
+
+                //Nishant Code Start - Code Add for Exporting to PDF
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        title: 'Convergence Report',
+                        pageSize: 'A4',
+                        text: 'Export to PDF'
+                    }
+                ]
+                //Code End - Code Added for File Export to PDF
+
+            });
+
+            $('a.toggle-vis').on('click', function (e) {
+                e.preventDefault();
+
+                // Get the column API object
+                var column = table.column($(this).attr('data-column'));
+
+                // Toggle the visibility
+                column.visible(!column.visible());
+            });
+        });
+    </script>
+    <!--Nishant : Code Start: Added Code for Datatables-->
+    
+}
+
+

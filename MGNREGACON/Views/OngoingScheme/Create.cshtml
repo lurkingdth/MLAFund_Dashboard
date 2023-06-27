@@ -1,0 +1,576 @@
+﻿@{
+    ViewBag.Title = "Ongoing Scheme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/CompletedScheme">Ongoing Scheme</a></li>
+        <li class="breadcrumb-item active">Create</li>
+    </ol>
+
+
+}
+<div class="col-md-12 col-lg-12" id="app" v-cloak>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Add Ongoing Scheme
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Circle</label>
+                        <select name="division" v-model="completeenrty.division" class="form-control" required @@change="FillSubdivision()">
+                            <option v-bind:value="null">Select </option>
+                            <option v-for="d in divisionlist" v-bind:value="d.division_name">
+                                {{d.division_name}}
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Division</label>
+                        <select name="subdivision" v-model="completeenrty.subdivision" class="form-control" required>
+                            <option v-for="d in subdivisionList" v-bind:value="d.sub_division_name">
+                                {{d.sub_division_name}}
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">District</label>
+                        <select name="district" v-model="completeenrty.district" class="form-control" @@change="FillBlock()" required>
+                            <option v-for="d in districtList" v-bind:value="d.district_name">
+                                {{d.district_name}}
+                            </option>
+                        </select>
+
+
+
+
+
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Block</label>
+                        <select name="block" v-model="completeenrty.block" class="form-control" @@change="FillPanchayat()" required>
+                            <option v-for="d in blocklist" v-bind:value="d.block_name">
+                                {{d.block_name}}
+                            </option>
+                        </select>
+
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Panchayat</label>
+                        <select name="panchayat" v-model="completeenrty.panchayat" class="form-control" @@change="FillVillage()" required>
+                            <option v-for="d in panchayatList" v-bind:value="d.panchayat_name">
+                                {{d.panchayat_name}}
+                            </option>
+                        </select>
+
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Village</label>
+
+                        <select name="panchayat" v-model="completeenrty.village" class="form-control" @@change="FillVillage()" required>
+                            <option v-for="j in villageList" v-bind:value="j.village_name">
+                                {{j.village_name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-----box-->
+            <div class="box">
+                <div class="col-md-12">
+                    <h4>Basic Details</h4>
+                </div>
+            </div>
+            <!---box for basic information-->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Recoomended By(MLA/MP or Administrative Ground)</label>
+                        <select class="form-control select2" v-model="completeenrty.recommendedby">
+                            <option value="Administrative">Administrative</option>
+                            <option value="Honorable MP">Honorable MP</option>
+                            <option value="Honorable MLA">Honorable MLA</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of MLA/MP or Administrative Ground</label>
+
+                        <input type="text" required class="form-control" v-model="completeenrty.mlampname" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Constituency</label>
+                        <select name="assembly" v-model="completeenrty.nameofconsti" class="form-control" required>
+                            <option v-bind:value="null">Select </option>
+                            <option v-for="d in assemblylist" v-bind:value="d.assembly">
+                                {{d.assembly}}
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Sanction Year</label>
+                        <select class="form-control select2" v-model="completeenrty.sanction_year">
+                            @for (var i = 2001; i <= DateTime.Now.Year; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Type (New/Strengthening/Repair)</label>
+                        <select class="form-control select2" v-model="completeenrty.type" @@change="popUp()" >
+                            <option value="New" selected>New</option>
+                            <option value="Strengthening of REO Road">Strengthening of REO Road</option>
+                            <option value="Strengthening of Other Road">Strengthening of Other Road</option>
+                            <option value="Repair and Maintenance of REO Road" selected>Repair and Maintenance of REO Road</option>
+                            <option value="Repair and Maintenance of Other Road" selected>Repair and Maintenance of Other Road</option>
+                        </select>
+
+                        <p style="color:darkgoldenrod"> <span v-if="completeenrty.type=='Strengthening of REO Road' || completeenrty.type=='Repair and Maintenance of REO Road' && completeenrty.oldscheme_id!=null">Refrence Id of Completed Scheme: {{completeenrty.oldscheme_id}}  <button type="button" class="btn btn-xs btn-primary" @@click="popUp()">Change</button></span></p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Technology Used</label>
+                        <select class="form-control select2" v-model="completeenrty.technologyused">
+                            <option value="Traditional">Traditional</option>
+                            <option value="Modern" selected>Modern</option>
+
+                        </select>
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Scheme Name</label>
+
+                        <input type="text" required class="form-control" v-model="completeenrty.schemename" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Length of Road(in Km)</label>
+
+                        <input type="number" min="0" max="1500" required class="form-control" v-model="completeenrty.roadbridgelenghth" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Technical Sanction Amount</label>
+
+                        <input type="number" required class="form-control" v-model="completeenrty.technicalamount" />
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Administrative Approval Amount</label>
+
+                        <input type="number" required class="form-control" v-model="completeenrty.administrativesanctionamount" />
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Reference of Administrative Approval</label>
+
+                        <input type="text" required class="form-control" v-model="completeenrty.referenceofadministrativeapproval" />
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Contractor</label>
+
+                        <input type="text" required class="form-control" v-model="completeenrty.contractorname" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Registration No. of Contractor</label>
+
+                        <input type="text" required class="form-control" v-model="completeenrty.regidcontractor" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Agreement</label>
+
+                        <input type="date" required class="form-control" v-model="completeenrty.dateofagreement" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Total Agreement Amount</label>
+
+                        <input type="number" required class="form-control" v-model="completeenrty.agreementamount" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Agreement Number</label>
+
+                        <input type="text" required class="form-control" v-model="completeenrty.agreementnumber" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Completion As per Agreement</label>
+
+                        <input type="date" required class="form-control" v-model="completeenrty.dateofcompletionasperagreement" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Actual Completion</label>
+
+                        <input type="date" required class="form-control" v-model="completeenrty.dateofcompletionactual" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Total Expenditure (Previous Financial Year)</label>
+
+                        <input type="number" required class="form-control" v-model="completeenrty.totexpenditureprevious" />
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <!---end basic-->
+            <!-- /.box-body -->
+            <!-- /.box-footer-->
+            <div class="box">
+                <div class="col-md-12">
+                    <h4>Month Wise Physical Progress</h4>
+                </div>
+            </div>
+            <!--physical-->
+            <div class="box">
+                <div id="PHY_CON">
+
+
+
+                    <div class="box-body d" id="PHY_1" v-for="(d,i) in completeenrty.roadphysicals">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Year</label>
+                                    <select class="form-control select2" v-model="d.sanction_year_r">
+                                        @for (var i = 2001; i <= DateTime.Now.Year; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Month</label>
+                                    <select class="form-control" v-model="d.month">
+                                        <option v-for="m in months " v-bind:value="m">{{m}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Length of Road(in Km)</label>
+
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.roadbridgelenghth" />
+
+                                </div>
+                            </div>
+                            @*<div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Completed Length Till Date (in Km or meter)</label>
+                                        <input type="number" min="0" max="1500" required class="form-control" v-model="d.completedlengthtillnow" />
+
+                                    </div>
+                                </div>*@
+                            @*<div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Balance Length Till Date (in Km or meter)</label>
+                                        <input type="number" min="0" max="1500" required class="form-control" v-model="d.balancelengthtillnow" />
+
+                                    </div>
+                                </div>*@
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Earth Work(in KM)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.earthwork" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">GSB(in KM)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.gsb" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">WBM Grade II(in KM)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.wbmgradetwo" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">WBM Grade III(in KM)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.wbmgradethree" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">BUSG(in KM)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.busg" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">PMC(in KM)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.pmc" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">PCC(in KM)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.pcc" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">CD(In No.)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.cd" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">GW(in Meter)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.gw" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Drain(In Meter)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.drain" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Physical Progress In(%)</label>
+                                    <input type="number" min="0" max="1500" required class="form-control" v-model="d.physicalpercent" />
+
+                                </div>
+                            </div>
+                            <!--financi-->
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Total Expenditure in this month</label>
+
+                                    <input type="number" required class="form-control" v-model="d.totexpenditureprevious" />
+                                </div>
+                            </div>
+                            <!--eee-->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <br>
+                                    <button type="button" id="rmv_phy" class="btn btn-danger" @@click="remove(i)">Remove</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <button type="button" id="add_phy_add" class="btn btn-success" @@click="addPhyscial">Add Multiple Colomn for Different Months</button>
+
+
+            <!-- /.box-body -->
+            <!-- /.box-footer-->
+            <!---end of physical-->
+            <!---financial info-->
+            <!--end of financial-->
+            <!-----boxend-->
+            <div class="box-body">
+
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">PDF Upload</label>
+                        <input type="file" id="filename_c" value="No Files Chosen" ref="gg" />
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Remarks</label>
+                        <input type="text" required class="form-control" v-model="completeenrty.remark" />
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <input type="button" value="Submit" class="btn btn-primary" @@click="saveData()" />
+                <a href="@Url.Action("OngoingScheme", "OngoingSchemeView")" class="btn btn-success">View</a>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @required = "true" })
+                <div class="pad margin no-print">
+
+                    @ViewBag.Msg
+                </div>
+            </div>
+
+        </div>
+
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+
+    <b-modal id="modal-1" ref="data" scrollable size="xl" title="Select One" hide-footer>
+        <!--table Completed Road Scheme for Fetchinh Refrence id-->
+        <table id="example1" class="table table-bordered table-striped Items">
+            <thead>
+                <tr>
+                    <th>Division</th>
+                    <th>Subdivision</th>
+                    <th>District</th>
+                    <th>Block</th>
+                    <th>Panchayat</th>
+                    <th>Recommended By</th>
+                    <th>Sanction Year</th>
+                    <th>Scheme Name</th>
+                    @*<td>Monthly Progress Report</td>*@
+                </tr>
+            </thead>
+
+            
+
+               
+                <tbody>
+
+                    
+
+                        <tr v-if="oldshemes.length>0" v-for="item in oldshemes">
+
+                            <td>{{item.division}}</td>
+                            <td>{{item.subdivision}}</td>
+                            <td>{{item.district}}</td>
+                            <td>{{item.block}}</td>
+                            <td>{{item.panchayat}}</td>
+                            <td>{{item.recommendedby}}</td>
+                            <td>{{item.sanction_year}}</td>
+                            <td>{{item.schemename}}</td>
+                            <td><button type="button" class="btn btn-xs btn-primary" @@click="selectRefrence(item)">Select</button></td>
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.i.ceid" popupdis="@item.i.district" popupblk="@item.i.block" popuppan="@item.i.panchayat" popupmla="@item.i.mlampname" popupconsti="@item.i.nameofconsti" popupschemetype="@item.i.typeofscheme">Monthly Progress</button></td>*@
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.i.bridge_ongoing_id">Monthly Progress</button></td>*@
+                        </tr>
+                    
+
+                </tbody>
+            
+
+
+        </table>
+        <!--end -->
+
+
+        <div>
+
+        </div>
+    </b-modal>
+
+   
+</div>
+            @*</div>
+
+ /.card-header 
+ form start 
+        </div>
+    </div>
+</div>*@
+
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/bootstrap-vue/bootstrap-vue.min.js"></script>
+    <script src="~/Scripts/bootstrap-vue/bootstrap-vue-icons.js"></script>
+    <link href="~/Scripts/bootstrap-vue/bootstrap-vue.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-vue/bootstrap-vue-icons.min.css" rel="stylesheet" />
+    <script>
+
+
+        Vue.use(BootstrapVue);
+    </script>
+    <script src="~/Scripts/apps/OngoingScheme.js"></script>
+}
+
+
+
+
+

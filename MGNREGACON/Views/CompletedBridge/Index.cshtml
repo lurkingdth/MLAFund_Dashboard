@@ -1,0 +1,154 @@
+﻿@model IEnumerable<MGNREGA.Models.Data.completed_bridge>
+
+@{
+    ViewBag.Title = "Completed Bridge Scheme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+    
+<ol class="breadcrumb float-sm-right">
+    <li class="breadcrumb-item"><a href="/CompletedBridge">Completed Bridge Scheme</a></li>
+    <li class="breadcrumb-item active">Index</li>
+</ol>
+    
+    
+    }
+
+<div class="col-md-12 col-lg-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Completed Bridge Schemes  (
+                @Html.ActionLink("Create New", "View"))
+            </h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+
+
+
+        <table id="example1" class="table table-bordered table-striped Items table-responsive">
+            <thead>
+                <tr>
+
+                    @*<th>SNo</th>
+                    <th>Division</th>
+                    <th>Subdivision</th>
+                    <th>District</th>
+                    <th>Block</th>
+                    <th>Panchayat</th>
+                    <th>Recommended By</th>
+                    <th>Sanction Year</th>
+                    <th>Scheme Name</th>*@
+                    @*<td>Monthly Progress Report</td>*@
+                    <th>Sno                                </th>
+                    <th>Division                           </th>
+                    <th>Subdivision                        </th>
+                    <th>District                           </th>
+                    <th>Block                              </th>
+                    <th>Panchayat                          </th>
+                    <th>Village                            </th>
+                    <th>Recommendedby                      </th>
+                    <th>Mla_Mp_name                        </th>
+                    <th>Name_of_constitution               </th>
+                    <th>Sanction_Year                      </th>
+                    <th>Type_Of_Head                       </th>
+                    <th>Scheme_Name                        </th>
+                    <th>Consultancy_Name           </th>
+                    <th>Type_Of_Foundation                 </th>
+                    <th>Amount_Increase                    </th>
+                    <th>Amount_Decrease                    </th>
+                    <th>Reason_of_Deviation                </th>
+                    <th>Sanction_Aboutment                 </th>
+                    <th>Sanction_Pier                      </th>
+                    <th>Sanction_Slab                      </th>
+                    <th>Lengthof_Approach_Road             </th>
+                    <th>Lengthof_Retainingwall             </th>
+                    <th>Administrative_Sanction_Amount     </th>
+                    <th>Reference_Administrative_Approval  </th>
+                    <th>Contractorname                     </th>
+                    <th>Registration_id_contractor         </th>
+                    <th>Agreement_Date                     </th>
+                    <th>Agreement_Number                   </th>
+                    <th>Agreement_Amount                   </th>
+                    <th>Date_of_completion_as_peragreement </th>
+                    <th>Date_of_completionactual           </th>
+                    <th>Total_expenditure                  </th>
+                    <th>Length_of_Bridge                   </th>
+                </tr>
+            </thead>
+
+            @if (Model != null)
+            {
+
+                //  var SNo = 1;
+                ////  var s = 0;
+                <tbody>
+
+                    @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                    {
+
+                        <tr>
+
+                            @*<td>@item.it</td>
+                            <td>@item.i.division</td>
+                            <td>@item.i.subdivision</td>
+                            <td>@item.i.district</td>
+                            <td>@item.i.block</td>
+                            <td>@item.i.panchayat</td>
+                            <td>@item.i.recommendedby</td>
+                            <td>@item.i.sanction_year</td>
+                            <td>@item.i.schemename</td>*@
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.i.ceid" popupdis="@item.i.district" popupblk="@item.i.block" popuppan="@item.i.panchayat" popupmla="@item.i.mlampname" popupconsti="@item.i.nameofconsti" popupschemetype="@item.i.typeofscheme">Monthly Progress</button></td>*@
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.i.ceid">Monthly Progress</button></td>*@
+                            <td>@item.it</td>
+                            <td>@item.i.division                        </td>
+                            <td>@item.i.subdivision                     </td>
+                            <td>@item.i.district                        </td>
+                            <td>@item.i.block                           </td>
+                            <td>@item.i.panchayat                       </td>
+                            <td>@item.i.village                         </td>
+                            <td>@item.i.recommendedby                   </td>
+                            <td>@item.i.mlampname                       </td>
+                            <td>@item.i.nameofconsti                    </td>
+                            <td>@item.i.sanction_year                   </td>
+                            <td>@item.i.type_of_head                    </td>
+                            <td>@item.i.schemename                      </td>
+                            <td>@item.i.consultancy_name          </td>
+                            <td>@item.i.type_of_foundation              </td>
+                            <td>@item.i.amount_increase                 </td>
+                            <td>@item.i.amount_decrease                 </td>
+                            <td>@item.i.reasonofdeviation               </td>
+                            <td>@item.i.sanction_aboutment              </td>
+                            <td>@item.i.sanction_pier                   </td>
+                            <td>@item.i.sanction_slab                   </td>
+                            <td>@item.i.lengthof_approach_road          </td>
+                            <td>@item.i.lengthof_retainingwall          </td>
+                            <td>@item.i.administrativesanctionamount    </td>
+                            <td>@item.i.refadministrativeapproval       </td>
+                            <td>@item.i.contractorname                  </td>
+                            <td>@item.i.regidcontractor                 </td>
+                            <td>@item.i.dateofagreement                 </td>
+                            <td>@item.i.agreementnumber                 </td>
+                            <td>@item.i.agreementamount                 </td>
+                            <td>@item.i.dateofcompletionasperagreement  </td>
+                            <td>@item.i.dateofcompletionactual          </td>
+                            <td>@item.i.totalexpenditure                </td>
+                            <td>@item.i.lengthofbridge                  </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            }
+
+
+        </table>
+    </div>
+</div>
+
+
+
+

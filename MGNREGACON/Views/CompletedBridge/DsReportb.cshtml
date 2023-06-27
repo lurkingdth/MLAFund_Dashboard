@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MGNREGA.Models.Data.vw_totapp>
+
+@{
+    ViewBag.Title = "Completed Bridge  Scheme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+    
+<ol class="breadcrumb float-sm-right">
+    <li class="breadcrumb-item"><a href="/CompletedBridgeScheme">Completed Bridge Scheme Report Division Wise</a></li>
+    <li class="breadcrumb-item active">Index</li>
+</ol>
+    
+    
+    }
+
+<div class="col-md-12 col-lg-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Completed Bridg Schemes Report</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+
+
+
+        <table id="example1" class="table table-bordered table-striped Items table-responsive">
+            <thead>
+                <tr>
+
+                    <th>SNo</th>
+                    <th>Division</th>                 
+                    <th>Total Entry</th>
+                </tr>
+            </thead>
+
+            @if (Model != null)
+            {
+
+                //  var SNo = 1;
+                ////  var s = 0;
+                <tbody>
+
+                    @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                    {
+
+                        <tr>
+
+                            <td>@item.it</td>
+                            <td>@item.i.subdivision</td>
+                            <td>@item.i.totapp</td>
+
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.recid">Assign to EE for Feasibility</button></td>*@
+
+                        </tr>
+                        
+
+
+
+                        //  s = s + Convert.ToInt32(item.totalapp);
+
+                    }
+
+                </tbody>
+                //  Session["tapp"] =s;
+
+
+
+
+            }
+
+
+        </table>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,121 @@
+﻿@model IEnumerable<MLAFund.Models.Data.mla_expenses>
+@{
+    ViewBag.Title = "Assembly Detailed Expense - Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="Home/Index">Home</a></li>
+        <li class="breadcrumb-item active">Index</li>
+    </ol>
+}
+
+<div class="col-md-12 col-lg-12">
+    <div class="card card-dark">
+        <div class="card-header">
+            <h3 class="card-title">Fund Expenditure Report</h3>
+        </div>
+
+        <div class="container-fluid">
+            <table id="detailed_expenditure_report" class="table table-bordered table-striped Items table-responsive">
+                <thead>
+                    <tr>
+                        <th>Serial No.</th>
+                        <th> Assembly Name </th>
+                        <th> MLA Name </th>
+                        <th> Financial Year </th>
+                        <th> Expense Head </th>
+                        <th> Expense Description </th>
+                        <th> Expense Amount </th>
+                        <th> Bill Copy </th>
+                    </tr>
+
+                </thead>
+
+                @if (Model != null)
+                {
+
+                    <tbody>
+
+                        @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                        {
+
+                            <tr>
+
+                                <td>@item.it</td>
+                                <td>@item.i.assembly_name</td>
+                                <td>@item.i.mla_name</td>
+                                <td>@item.i.financial_year</td>
+                                <td>@item.i.expense_head</td>
+                                <td>@item.i.expense_detail</td>
+                                <td>@item.i.expense_amount</td>
+                                <td>@item.i.expense_doc</td>
+                            </tr>
+                            //  s = s + Convert.ToInt32(item.totalapp);
+                        }
+                    </tbody>
+                    //  Session["tapp"] =s;
+                }
+
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/vee-validate/vee-validate.min.js"></script>
+    <script>Vue.use(VeeValidate);</script>
+    <script src="~/Scripts/apps/FundAlloted.js"></script>
+
+
+    <!--Nishant : Code Start: Added Code for Datatables-->
+    <script>
+        $(document).ready(function () {
+            var table = $('#detailed_expenditure_report',).DataTable({
+                //Toggle the below paging to false - to remove pagination
+                paging: true,
+
+
+                //Nishant Code Start - Code Add for Exporting to PDF
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        orientation: 'landscape',
+                        title: 'Assembly Fund Utilization Report',
+                        pageSize: 'A4',
+                        text: 'Export to Excel'
+                    }
+                ]
+                //Code End - Code Added for File Export to PDF
+
+            });
+
+            $('a.toggle-vis').on('click', function (e) {
+                e.preventDefault();
+
+                // Get the column API object
+                var column = table.column($(this).attr('data-column'));
+
+                // Toggle the visibility
+                column.visible(!column.visible());
+            });
+        });
+    </script>
+    <!--Nishant : Code Start: Added Code for Datatables-->
+}
+
+

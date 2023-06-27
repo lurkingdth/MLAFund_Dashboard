@@ -1,0 +1,310 @@
+﻿@using MLAFund.Models
+
+@{
+    ViewBag.Title = "Fund New Entry";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@*@section bc{
+
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/convergence">convergence</a></li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+
+
+    }*@
+<div class="col-md-12 col-lg-12" id="app" v-cloak>
+    <div class="card card-secondary">
+        <div class="card-header">
+            <h3 class="card-title">
+                New Fund Entry
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">District</label>
+                        <select name="district" v-model="convergence.district" class="form-control" @@change="FillBlock(),FillDepartment()" v-validate="'required'" ref="district">
+                            <option v-for="d in districtList" v-bind:value="d.district_name">
+                                {{d.district_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('district') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Block</label>
+                        <select name="block" v-model="convergence.block" class="form-control" @@change="FillPanchayat()" v-validate="'required'" ref="block">
+                            <option v-for="d in blocklist" v-bind:value="d.block_name">
+                                {{d.block_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('block') }}</span>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Panchayat</label>
+                        <select name="panchayat" v-model="convergence.panchayat" class="form-control" @@change="FillVillage()" v-validate="'required'" ref="panchayat">
+                            <option v-for="d in panchayatList" v-bind:value="d.panchayat_name">
+                                {{d.panchayat_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('panchayat') }}</span>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Village</label>
+
+                        <select name="village" v-model="convergence.village" class="form-control" @@change="FillVillage()" v-validate="'required'" ref="village">
+                            <option v-for="j in villageList" v-bind:value="j.village_name">
+                                {{j.village_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('village') }}</span>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-12 col-lg-12">
+                    @* Nishant - Populating Departments and Username - Start *@
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Scheme Details
+                            </h3>
+                        </div>
+                        <div class="col-md-12 p-2 bg-light card-body" style="border: 1px solid grey;">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="nameOfScheme">Name of Scheme</label>
+                                    <input type="text" required class="form-control" v-model="convergence.nameofscheme" />
+                                </div>
+                            </div>
+                            <div id="department_scheme" v-for="(item, index) in convergence.convergencedpt">
+                                <div class="row">
+                                    @* Populating Department Name - Start *@
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="departmentName">Department Name</label>
+                                            @*<select name="department" v-model="convergence.convergencedpt.convergencedptname" class="form-control" @@change="FillSchemes()" v-validate="'required'" ref="department">*@
+                                            <select name="department" v-model="item.convergencedptname" class="form-control" @@change="FillSchemes()" v-validate="'required'" ref="department">
+                                                <option v-for="j in departmentList" v-bind:value="j.DepartmentName">
+                                                    {{j.DepartmentName}}
+                                                </option>
+                                            </select>
+                                            <span style="color:red">{{ errors.first('department') }}</span>
+                                        </div>
+                                    </div>
+
+                                    @* Populating Department Name - End *@
+
+                                    @* Populating Username  - Start *@
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="convergencedptscheme">Department Scheme Name</label>
+                                            @*<select name="convergencedptscheme" v-model="convergence.convergencedpt.convergencedptscheme" class="form-control" v-validate="'required'" ref="convergencedptscheme">*@
+                                            <select name="convergencedptscheme" v-model="item.convergencedptscheme" class="form-control" @@change="FillUsername()" v-validate="'required'" ref="convergencedptscheme">
+                                                <option v-for="j in schemeList" v-bind:value="j.SchemeName">
+                                                    {{j.SchemeName}}
+                                                </option>
+                                            </select>
+                                            <span style="color:red">{{ errors.first('convergencedptscheme') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="convergencefund">Convergence Fund</label>
+                                            <input type="text" required class="form-control" v-model="item.convergencefund" disabled />
+                                            <span style="color:red">{{ errors.first('convergencefund') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="index">
+                                    <button type="button" id="remove_dept_sector" class="btn btn-danger mb-3" @@click="removeDeptSector(index)">Remove</button>
+                                </div>
+                            </div>
+                            @* Incase of Additional Department Click - Add Department *@
+                         <button type="button" id="add_dept_sector" class="btn btn-success mb-3" @@click="addDeptSector()">Add Department</button>
+                        </div>
+                    </div>
+                    @* Populating Username  - End *@
+                    @* Nishant - Populating Departments and Username - End *@
+                </div>
+
+                <!-- Fund details Section - Start-->
+                <div class="col-md-12 col-lg-12">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Fund Details
+                            </h3>
+                        </div>
+                        <div>
+                            <div class="col-md-12 p-2 bg-light card-body" style="border: 1px solid grey;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="fundOfDpt">Department Fund Allocated</label>
+                                            <input type="number" required class="form-control" placeholder="Enter amount" v-model="convergence.fundofdpt" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="fundOfMgnrega">Mgnrega Fund Allocated</label>
+                                            <input type="text" required class="form-control" placeholder="Enter amount" v-model="convergence.fundofmgnrega" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="totalFund">Total Fund Allocated</label>
+                                            <input type="text" required class="form-control" placeholder="Enter amount" v-model="convergence.totalfund" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dateOfSanctioned">Scheme Sanction Date</label>
+                                            <input type="date" required class="form-control" v-model="convergence.dateofsanctioned" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="totalFundUtilized">Total Fund Utilized</label>
+                                        <input type="text" required class="form-control" placeholder="Enter amount" v-model="convergence.totalfundutilized" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fund details Section - End-->
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Time Details
+                            </h3>
+                        </div>
+
+                        <div class="col-md-12 p-2 bg-light card-body" style="border: 1px solid grey;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="timeLimit">Time limit</label>
+                                        <input type="date" required class="form-control" v-model="convergence.timelimit" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="timeSpent">Time Spent</label>
+                                        <input type="date" required class="form-control" v-model="convergence.timespent" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*<div class="col-md-6">
+                            <div class="form-group">
+                                <label for="convergenceDoc">convergence Doc</label>
+                                <input type="text" required class="form-control" v-model="convergence.convergence_doc" />
+                            </div>
+                        </div>*@
+
+
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- general form elements -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">@Session["district"]</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- form start -->
+
+                            <div class="box-body">
+
+                                <!---wizard-->
+                                <!---end wizard-->
+
+
+
+                            </div>
+                            <!-----boxend-->
+                            <div class="box-body">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">PDF Upload</label>
+                                        <input type="file" id="filename_c" value="No Files Chosen" ref="gg" />
+                                        @*<input type="button" id="btnUpload" value="Upload PDF" class="btn btn-info" />*@
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                @*<input type="button" value="Submit" class="btn btn-primary" @@click="saveData()" />*@
+
+                                <button type="button" class="btn btn-primary" @@click="saveData()" v-bind:disabled="busy">
+                                    <i class="fas fa-spinner fa-spin" v-if="busy"></i>
+                                    Submit
+                                </button>
+                                <a href="@Url.Action("Home","Index")" class="btn btn-success">View</a>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger", @required = "true" })
+                                <div class="pad margin no-print">
+
+                                    @ViewBag.Msg
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <!-- /.card-header -->
+                <!-- form start -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/vee-validate/vee-validate.min.js"></script>
+    <script>Vue.use(VeeValidate);</script>
+    <script src="~/Scripts/apps/convergence.js"></script>
+}
+
+
+
+
+
+

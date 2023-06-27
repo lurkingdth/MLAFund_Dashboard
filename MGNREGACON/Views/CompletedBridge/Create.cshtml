@@ -1,0 +1,459 @@
+﻿
+
+@{
+    ViewBag.Title = "Completed Bridge";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/CompletedBridge">Completed Bridge</a></li>
+        <li class="breadcrumb-item active">Create</li>
+    </ol>
+
+
+}
+<div class="col-md-12 col-lg-12" id="app" v-cloak>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Add New Completed Bridge
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Circle</label>
+                        <select name="Circle" v-model="completed_bridge.division" class="form-control" @@change="FillSubdivision()" v-validate="'required'" ref="Circle">
+                            <option v-bind:value="null">Select </option>
+                            <option v-for="d in divisionlist" v-bind:value="d.division_name">
+                                {{d.division_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('Circle') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Division</label>
+                        <select name="division" v-model="completed_bridge.subdivision" class="form-control" v-validate="'required'" ref="division">
+                            <option v-for="d in subdivisionList" v-bind:value="d.sub_division_name">
+                                {{d.sub_division_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('division') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">District</label>
+                        <select name="district" v-model="completed_bridge.district" class="form-control" @@change="FillBlock()" v-validate="'required'" ref="district">
+                            <option v-for="d in districtList" v-bind:value="d.district_name">
+                                {{d.district_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('district') }}</span>
+
+
+
+
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Block</label>
+                        <select name="block" v-model="completed_bridge.block" class="form-control" @@change="FillPanchayat()" v-validate="'required'" ref="block">
+                            <option v-for="d in blocklist" v-bind:value="d.block_name">
+                                {{d.block_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('division') }}</span>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Panchayat</label>
+                        <select name="panchayat" v-model="completed_bridge.panchayat" class="form-control" @@change="FillVillage()" v-validate="'required'" ref="panchayat">
+                            <option v-for="d in panchayatList" v-bind:value="d.panchayat_name">
+                                {{d.panchayat_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('panchayat') }}</span>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Village</label>
+
+                        <select name="village" v-model="completed_bridge.village" class="form-control" @@change="FillVillage()" v-validate="'required'" ref="village">
+                            <option v-for="j in villageList" v-bind:value="j.village_name">
+                                {{j.village_name}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('village') }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <h4>Basic Details</h4>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Scheme Name/ Bridge Name</label>
+
+                        <input name="schemename" type="text" class="form-control" v-model="completed_bridge.schemename" v-validate="'required'" ref="schemename" />
+                        <span style="color:red">{{ errors.first('schemename') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Recoomended By(MLA/MP or Administrative Ground)</label>
+                        <select name="recommendedby" class="form-control select2" v-model="completed_bridge.recommendedby" v-validate="'required'" ref="recommendedby">
+                            <option value="Administrative">Administrative</option>
+                            <option value="Honorable MP">Honorable MP</option>
+                            <option value="Honorable MLA">Honorable MLA</option>
+                        </select>
+
+                        <span style="color:red">{{ errors.first('recommendedby') }}</span>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of MLA/MP or Administrative Ground</label>
+
+                        <input name="mlampname" type="text" class="form-control" v-model="completed_bridge.mlampname" v-validate="'required'" ref="mlampname" />
+                        <span style="color:red">{{ errors.first('mlampname') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Constituency</label>
+                        <select name="nameofconsti" v-model="completed_bridge.nameofconsti" class="form-control" v-validate="'required'" ref="nameofconsti">
+                            <option v-bind:value="null">Select </option>
+                            <option v-for="d in assemblylist" v-bind:value="d.assembly">
+                                {{d.assembly}}
+                            </option>
+                        </select>
+                        <span style="color:red">{{ errors.first('nameofconsti') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Sanction Year</label>
+                        <select name="sanction_year" class="form-control select2" v-model="completed_bridge.sanction_year" v-validate="'required'" ref="sanction_year">
+                            @for (var i = 2001; i <= DateTime.Now.Year; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <span style="color:red">{{ errors.first('sanction_year') }}</span>
+
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Consultancy</label>
+                        <select name="consultancy_name" class="form-control select2" v-model="completed_bridge.consultancy_name" v-validate="'required'" ref="consultancy_name">
+                            <option value="Asha Engineering Consultant">Asha Engineering Consultant</option>
+                            <option value="Archit Consultant">Archit Consultant</option>
+                            <option value="Ranchi Design & Consultancy Services Pvt. Ltd.">Ranchi Design & Consultancy Services Pvt. Ltd.</option>
+                            <option value="Sparsh Engineering">Sparsh Engineering</option>
+                            <option value="Universal Engineering Group">Universal Engineering Group</option>
+                            <option value="Smiton Project Pvt. Ltd.">Smiton Project Pvt. Ltd.</option>
+                            <option value="Rankine Techno Consultancy Pvt. Ltd.">Rankine Techno Consultancy Pvt. Ltd.</option>
+                            <option value="Dynamic Project 196 AG Arabinda Sarani Kolakata">Dynamic Project 196 AG Arabinda Sarani Kolakata</option>
+                        </select>
+                        <span style="color:red">{{ errors.first('consultancy_name') }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Type of Foundation</label>
+                        <select name="type_of_foundation" class="form-control select2" v-model="completed_bridge.type_of_foundation" v-validate="'required'" ref="type_of_foundation">
+                            <option value="Open">Open</option>
+                            <option value="Pile">Pile</option>
+                            <option value="Both Open and pile">Both Open and pile</option>
+                        </select>
+                        <span style="color:red">{{ errors.first('type_of_foundation') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Type of Head</label>
+                        <select name="type_of_head" class="form-control select2" v-model="completed_bridge.type_of_head" v-validate="'required'" ref="type_of_head">
+                            <option value="TSP">TSP</option>
+                            <option value="OSP">OSP</option>
+                            <option value="SCSP">SCSP</option>
+                        </select>
+                        <span style="color:red">{{ errors.first('type_of_head') }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Length of Bridge(in meter)</label>
+
+                        <input name="lengthofbridge" type="number" min="0" max="1500" class="form-control" v-model="completed_bridge.lengthofbridge" v-validate="'required'" ref="lengthofbridge" />
+                        <span style="color:red">{{ errors.first('lengthofbridge') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Length of Approach Road</label>
+
+                        <input name="lengthof_approach_road" type="number" min="0" max="1500" class="form-control" v-model="completed_bridge.lengthof_approach_road" v-validate="'required'" ref="lengthof_approach_road" />
+                        <span style="color:red">{{ errors.first('lengthof_approach_road') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Length of Retaining Wall/Guard Wall</label>
+
+                        <input name="lengthof_retainingwall" type="number" min="0" max="1500" class="form-control" v-model="completed_bridge.lengthof_retainingwall" v-validate="'required'" ref="lengthof_retainingwall" />
+                        <span style="color:red">{{ errors.first('lengthof_retainingwall') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">if in case of Deviation(Increased Amount)</label>
+                        <input name="amount_increase" type="number" min="0" max="100" class="form-control" v-model="completed_bridge.amount_increase" v-validate="'required'" ref="amount_increase" />
+                        <span style="color:red">{{ errors.first('amount_increase') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">if in case of Deviation(Decresed Amount)</label>
+                        <input name="amount_decrease" type="number" min="0" max="100" class="form-control" v-model="completed_bridge.amount_decrease" v-validate="'required'" ref="amount_decrease" />
+                        <span style="color:red">{{ errors.first('amount_decrease') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Reason of Deviation</label>
+
+                        <input name="reasonofdeviation" type="text" class="form-control" v-model="completed_bridge.reasonofdeviation" v-validate="'required'" ref="reasonofdeviation" />
+                        <span style="color:red">{{ errors.first('reasonofdeviation') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Number of Abutment Sanctioned</label>
+                        <input name="sanction_aboutment" type="number" min="0" max="100" class="form-control" v-model="completed_bridge.sanction_aboutment" v-validate="'required'" ref="sanction_aboutment" />
+                        <span style="color:red">{{ errors.first('sanction_aboutment') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Number of Pier Sanctioned</label>
+                        <input name="sanction_pier" type="number" min="0" max="100" class="form-control" v-model="completed_bridge.sanction_pier" v-validate="'required'" ref="sanction_pier" />
+                        <span style="color:red">{{ errors.first('sanction_pier') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Number of Slab Sanctioned</label>
+                        <input name="sanction_slab" type="number" min="0" max="100" class="form-control" v-model="completed_bridge.sanction_slab" v-validate="'required'" ref="sanction_slab" />
+                        <span style="color:red">{{ errors.first('sanction_slab') }}</span>
+                    </div>
+                </div>
+
+                @*<div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Technical Sanction Amount</label>
+
+                            <input type="text" required class="form-control" v-model="completed_bridge.technicalsanctionamount" />
+                        </div>
+                    </div>*@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Amount of Administrative Approval</label>
+
+                        <input name="administrativesanctionamount" type="number" class="form-control" v-model="completed_bridge.administrativesanctionamount" v-validate="'required'" ref="administrativesanctionamount" />
+                        <span style="color:red">{{ errors.first('administrativesanctionamount') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Refrence of Administrative Approval</label>
+
+                        <input name="refadministrativeapproval" type="text" class="form-control" v-model="completed_bridge.refadministrativeapproval" v-validate="'required'" ref="refadministrativeapproval" />
+                        <span style="color:red">{{ errors.first('refadministrativeapproval') }}</span>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Contractor</label>
+
+                        <input name="contractorname" type="text" class="form-control" v-model="completed_bridge.contractorname" v-validate="'required'" ref="contractorname" />
+                        <span style="color:red">{{ errors.first('contractorname') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Registration No. of Contractor</label>
+
+                        <input name="regidcontractor" type="text" class="form-control" v-model="completed_bridge.regidcontractor" v-validate="'required'" ref="regidcontractor" />
+                        <span style="color:red">{{ errors.first('regidcontractor') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Agreement</label>
+
+                        @*<input type="date" required class="form-control" v-model="completed_bridge.dateofagreement" />*@
+                        <input name="dateofagreement" type="date" data-date="" class="form-control" data-date-format="DD-MM-YYYY" v-model="completed_bridge.dateofagreement" v-validate="'required'" ref="dateofagreement">
+                        <span style="color:red">{{ errors.first('dateofagreement') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Agreement Number</label>
+
+                        <input name="agreementnumber" type="text" class="form-control" v-model="completed_bridge.agreementnumber" v-validate="'required'" ref="agreementnumber" />
+                        <span style="color:red">{{ errors.first('agreementnumber') }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Agreement Amount</label>
+
+                        <input name="agreementamount" type="number" class="form-control" v-model="completed_bridge.agreementamount" v-validate="'required'" ref="agreementamount" />
+                        <span style="color:red">{{ errors.first('agreementamount') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Completion As per Agreement</label>
+
+                        <input name="dateofcompletionasperagreement" type="date" class="form-control" v-model="completed_bridge.dateofcompletionasperagreement" v-validate="'required'" ref="dateofcompletionasperagreement" />
+                        <span style="color:red">{{ errors.first('dateofcompletionasperagreement') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Actual Completion</label>
+
+                        <input name="dateofcompletionactual" type="date" class="form-control" v-model="completed_bridge.dateofcompletionactual" v-validate="'required'" ref="dateofcompletionactual" />
+                        <span style="color:red">{{ errors.first('dateofcompletionactual') }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Total Expenditure</label>
+
+                        <input name="totalexpenditure" type="number" class="form-control" v-model="completed_bridge.totalexpenditure" v-validate="'required'" ref="totalexpenditure" />
+                        <span style="color:red">{{ errors.first('totalexpenditure') }}</span>
+                    </div>
+                </div>
+
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">@Session["district"]</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+
+                        <div class="box-body">
+
+                            <!---wizard-->
+                            <!---end wizard-->
+                            <hr />
+
+
+                        </div>
+                        <!-----boxend-->
+                        <div class="box-body">
+
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">PDF Upload</label>
+                                    <input type="file" id="filename_c" value="No Files Chosen" ref="gg" />
+                                    @*<input type="button" id="btnUpload" value="Upload PDF" class="btn btn-info" />*@
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Remarks</label>
+                                    @*@Html.EditorFor(model => model.remark, new { htmlAttributes = new { @class = "form-control", @onkeyup = "NetWt()", @required = "true" } })
+                                        @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                                    <input type="text"  class="form-control" v-model="completed_bridge.remark" />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            @*<input type="button" value="Submit" class="btn btn-primary" @@click="saveData()" />*@
+
+                            <button type="button" class="btn btn-primary" @@click="saveData()" v-bind:disabled="busy">
+                                <i class="fas fa-spinner fa-spin" v-if="busy"></i>
+                                Submit
+                            </button>
+                            <a href="@Url.Action("CompletedBridge","Create")" class="btn btn-success">View</a>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @required = "true" })
+                            <div class="pad margin no-print">
+
+                                @ViewBag.Msg
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+
+        <!-- /.card-header -->
+        <!-- form start -->
+
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/vee-validate/vee-validate.min.js"></script>
+    <script>Vue.use(VeeValidate);</script>
+    <script src="~/Scripts/apps/ComletedBridge.js"></script>
+}
+
+
+
+
+
+

@@ -1,0 +1,351 @@
+﻿@model IEnumerable<MGNREGA.Models.Data.completeentry>
+@{
+    ViewBag.Title = "Monthly Progress Ongoing Road";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/OngoingScheme">Ongoing Scheme</a></li>
+        <li class="breadcrumb-item active">Index</li>
+    </ol>
+
+
+}
+<div class="col-md-12 col-lg-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Completed Schemes  (
+                @Html.ActionLink("Create New", "Create"))
+            </h3>
+        </div>
+        <table id="example1" class="table table-bordered table-striped Items">
+            <thead>
+                <tr>
+
+                    <th>SNo</th>
+                    <th>Division</th>
+                    <th>Subdivision</th>
+                    <th>District</th>
+                    <th>Block</th>
+                    <th>Panchayat</th>
+                    <th>Recommended By</th>
+                    <th>Sanction Year</th>
+                    <th>Scheme Name</th>
+                    <td>Monthly Progress Report</td>
+                </tr>
+            </thead>
+
+            @if (Model != null)
+            {
+
+                //  var SNo = 1;
+                ////  var s = 0;
+                <tbody>
+
+                    @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                    {
+
+                        <tr>
+
+                            <td>@item.it</td>
+                            <td>@item.i.division</td>
+                            <td>@item.i.subdivision</td>
+                            <td>@item.i.district</td>
+                            <td>@item.i.block</td>
+                            <td>@item.i.panchayat</td>
+                            <td>@item.i.recommendedby</td>
+                            <td>@item.i.sanction_year</td>
+                            <td>@item.i.schemename</td>
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.i.ceid" popupdis="@item.i.district" popupblk="@item.i.block" popuppan="@item.i.panchayat" popupmla="@item.i.mlampname" popupconsti="@item.i.nameofconsti" popupschemetype="@item.i.typeofscheme">Monthly Progress</button></td>*@
+                            <td><button type="button" class="clickme" id="myBtn" popupid="@item.i.ceid">Monthly Progress</button></td>
+                        </tr>
+                    }
+
+                </tbody>
+            }
+
+
+        </table>
+    </div>
+    <div class="modal fade" id="mydetailModal3" role="dialog">
+        <div class="modal-dialog">
+            <form action='' method='post'>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 class="modal-title">Monthly Report</h2>
+                    </div>
+                    <div class="modal-body" id='myModalContent112'>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Year</label>
+                                    <select class="form-control select2" id="yearid">
+                                        @for (var i = 2001;i <= DateTime.Now.Year;i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <input type="hidden" class="form-control" id="txtname" placeholder="id" required>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputEmail1">Month</label>
+                                    <select class="form-control" id="monthid">
+                                        <option value="January">January</option>
+                                        <option value="February">February</option>
+                                        <option value="March">March</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Length of Road(in Km)</label>
+
+                                    <input type="number" min="0" max="1500" id="lengthofroadid" required class="form-control" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Earth Work(in KM)</label>
+                                    <input type="number" min="0" max="1500" id="earthworkid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">GSB(in KM)</label>
+                                    <input type="number" min="0" max="1500" id="gsbid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">WBM Grade II(in KM)</label>
+                                    <input type="number" min="0" max="1500" id="wbmgradeIIid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">WBM Grade III(in KM)</label>
+                                    <input type="number" min="0" max="1500" id="wbmgradeIIIid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">BUSG(in KM)</label>
+                                    <input type="number" min="0" max="1500" id="busgid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">PMC(in KM)</label>
+                                    <input type="number" min="0" max="1500" id="pmcid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">PCC(in KM)</label>
+                                    <input type="number" min="0" max="1500" id="pccid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">CD(In No.)</label>
+                                    <input type="number" min="0" max="1500" id="cdid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">GW(in Meter)</label>
+                                    <input type="number" min="0" max="1500" id="gwid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Drain(In Meter)</label>
+                                    <input type="number" min="0" max="1500" id="drainid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Physical Progress In(%)</label>
+                                    <input type="number" min="0" max="1500" id="physicalprogresspercentid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <!--financi-->
+                           
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Total Expenditure in this month</label>
+
+                                    <input type="number" required id="totalexpinthismonthid" class="form-control" />
+                                </div>
+                            </div>
+                            <!--eee-->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success" id="btnsub">Submit</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".clickme").click(function () {
+               // alert("test");
+                $('#mydetailModal3').modal('show');
+                var pid = $(this).attr("popupid");
+                //var dis = $(this).attr("popupdis");
+                //var blk = $(this).attr("popupblk");
+                //var pan = $(this).attr("popuppan");
+                //var mla = $(this).attr("popupmla");
+                //var consti = $(this).attr("popupconsti");
+                $("#txtname").val(pid);
+                //$("#txtdis").val(dis);
+                //$("#txtblk").val(blk);
+                //$("#txtpan").val(pan);
+                //$("#txtmlaname").val(mla);
+                //$("#txtconsti").val(consti);
+            });
+
+        });
+    </script>
+    <script>
+    $('#btnsub').click(function () {
+        //alert("text2");
+        var txtid = $("#txtname").val();
+       // alert(txtid);
+        var sanction_year = $("#yearid").val();
+       // alert(sanction_year);
+        var month = $("#monthid").val();
+        //alert(month);
+        var roadbridgelenghth = $("#lengthofroadid").val();
+        //alert(roadbridgelenghth);
+        var earthwork = $("#earthworkid").val();
+        //alert(earthwork);
+        var gsb = $("#gsbid").val();
+        //alert(gsb);
+        var wbmgradetwo = $("#wbmgradeIIid").val();
+       // alert(wbmgradetwo);
+        var wbmgradethree = $("#wbmgradeIIIid").val();
+        //alert(wbmgradethree);
+        var busg = $("#busgid").val();
+       // alert(busg);
+        var pmc = $("#pmcid").val();
+        //alert(pmc);
+        var pcc = $("#pccid").val();
+        //alert(pcc);
+        var cd = $("#cdid").val();
+       // alert(cd);
+        var gw = $("#gwid").val();
+        //alert(gw);
+        var drain = $("#drainid").val();
+        //alert(drain);
+        var physicalpercent = $("#physicalprogresspercentid").val();
+       // alert(physicalpercent);
+        var totexpenditure = $("#totalexpinthismonthid").val();
+       // alert(totexpenditure);
+        var submittedby = "Admin";
+                //var window.location.reload();
+                if (txtid == '' ||
+                    sanction_year == ''
+
+                            ) {
+                    alert('Please fill required fields*');
+                    return false;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("Monthly_Report", "OngoingScheme")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        vc_ceid: txtid
+                       ,vc_sanction_year: sanction_year
+                        , vc_month: month
+                        , vc_roadbridgelenghth: roadbridgelenghth
+                        , vc_earthwork: earthwork
+                        , vc_gsb: gsb
+                        , vc_wbmgradetwo: wbmgradetwo
+                        , vc_wbmgradethree: wbmgradethree
+                        , vc_busg: busg
+                        , vc_pmc: pmc
+                        , vc_pcc: pcc
+                        , vc_cd: cd
+                        , vc_gw: gw
+                        , vc_drain: drain
+                        , vc_physicalpercent: physicalpercent
+                        , vc_totexpenditure: totexpenditure
+                        , vc_submittedby: submittedby },
+
+                    success: function (response) {
+                    if (response.success) {
+                        $("#mydetailModal3").modal("hide");
+                       // url: "master/viewchangestatus_ffc",
+                        window.location.reload();
+                        //var sid = "#status_" + txtid;
+                        alert(sid);
+                     var label = $(this).parent().find(sid);
+
+                    label.html = "testl-";
+                    } else {
+                    // DoSomethingElse()
+                    alert(response.responseText);
+                    }
+                    },
+                    error: function (response) {
+                    alert("error!");  //
+                    }
+                    });
+
+
+
+                    });
+    </script>
+    }

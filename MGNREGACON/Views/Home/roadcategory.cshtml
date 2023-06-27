@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "roadcategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+<ol class="breadcrumb float-sm-right">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item active">Dashboard v1</li>
+</ol>
+
+
+
+
+ }
+
+<div class="col-lg-12 col-12">
+    <!-- small box -->
+    <div id="app">
+        <v-app id="inspire">
+            <v-data-table :headers="headers"
+                          :items="roadcategories"
+                         
+                          class="elevation-1">
+                <template v-slot:top>
+                    <v-toolbar flat>
+                       
+                        <v-divider class="mx-4"
+                                   inset
+                                   vertical></v-divider>
+                        <v-spacer></v-spacer>
+                        <v-dialog v-model="dialog"
+                                  max-width="500px">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn color="primary"
+                                       dark
+                                       class="mb-2"
+                                       v-bind="attrs"
+                                       v-on="on">
+                                    New Item
+                                </v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5">{{ formTitle }}</span>
+                                </v-card-title>
+
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12"
+                                                   sm="6"
+                                                   md="6">
+                                                <v-text-field v-model="editedItem.category_road"
+                                                              label="Road Category"></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12"
+                                                   sm="6"
+                                                   md="6">
+                                                <v-text-field v-model="editedItem.category_road_detail"
+                                                              label="Category road detail"></v-text-field>
+                                            </v-col>
+                                           
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1"
+                                           text
+                                           @@click="close">
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn color="blue darken-1"
+                                           text
+                                           @@click="save">
+                                        Save
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                        <v-dialog v-model="dialogDelete" max-width="500px">
+                            <v-card>
+                                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @@click="closeDelete">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" text @@click="deleteItemConfirm">OK</v-btn>
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-toolbar>
+                </template>
+                <template v-slot:item.actions="{ item }">
+                    <button 
+                            @@click="editItem(item)">
+                       Edit
+                    </button>
+                    <v-icon small
+                            @@click="deleteItem(item)">
+                        mdi-delete
+                    </v-icon>
+                </template>
+                <template v-slot:no-data>
+                    <v-btn color="primary"
+                           @@click="initialize">
+                        Reset
+                    </v-btn>
+                </template>
+            </v-data-table>
+        </v-app>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+<script src="~/Scripts/vue/vue.js"></script>  
+<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+ 
+<script src="~/Scripts/axios/axios.min.js"></script>
+<script src="~/Scripts/apps/roadcategory.js"></script>
+    }

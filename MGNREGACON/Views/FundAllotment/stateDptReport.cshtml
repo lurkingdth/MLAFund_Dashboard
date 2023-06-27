@@ -1,0 +1,125 @@
+﻿@model IEnumerable<MLAFund.Models.Data.stateDeptReport>
+@{
+    ViewBag.Title = "Convergence Work Progress - Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@*@section bc{
+
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/convergence">convergence</a></li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+
+
+    }*@
+<ol class="breadcrumb float-sm-right">
+    <li class="breadcrumb-item"><a href="/CompletedScheme">Convergence Department Report</a></li>
+    <li class="breadcrumb-item active">@User.Identity.Name</li>
+</ol>
+
+<div class="col-md-12 col-lg-12">
+    <div class="card card-dark">
+        <div class="card-header">
+            <h3 class="card-title">Convergence Department Report</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+
+
+        <div class="container-fluid" >
+            <table id="convergence_pendingdptList" class="table table-bordered table-striped Items table-responsive">
+                <thead>
+                    <tr class="bg-secondary">
+                        <th style="width: 5%">Serial No.</th>
+                        <th> Department Name</th>
+                        <th> Pending </th>
+                        <th> Complete </th>
+                    </tr>
+
+                </thead>
+
+                @if (Model != null)
+                {
+
+                    //  var SNo = 1;
+                    ////  var s = 0;
+                    <tbody>
+
+                        @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                        {
+
+                            <tr>
+                                <td>@item.it</td>
+                                <td>@item.i.convergenceDptName</td>
+                                <td>@item.i.pending</td>
+                                <td>@item.i.completed</td>
+
+                            </tr>
+                            //  s = s + Convert.ToInt32(item.totalapp);
+                        }
+                    </tbody>
+                    //  Session["tapp"] =s;
+                }
+
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/vee-validate/vee-validate.min.js"></script>
+    <script>Vue.use(VeeValidate);</script>
+    <script src="~/Scripts/apps/convergence.js"></script>
+
+
+    <!--Nishant : Code Start: Added Code for Datatables-->
+    <script>
+        $(document).ready(function () {
+            var table = $('#convergence_pendingdptList',).DataTable({
+                //Toggle the below paging to false - to remove pagination
+                paging: true,
+
+
+                //Nishant Code Start - Code Add for Exporting to PDF
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'portrait',
+                        title: 'Convergence Departmental Report',
+                        pageSize: 'A4',
+                        text: 'Export to PDF'
+                    }
+                ]
+                //Code End - Code Added for File Export to PDF
+
+            });
+
+            $('a.toggle-vis').on('click', function (e) {
+                e.preventDefault();
+
+                // Get the column API object
+                var column = table.column($(this).attr('data-column'));
+
+                // Toggle the visibility
+                column.visible(!column.visible());
+            });
+        });
+    </script>
+    <!--Nishant : Code Start: Added Code for Datatables-->
+}
+
+

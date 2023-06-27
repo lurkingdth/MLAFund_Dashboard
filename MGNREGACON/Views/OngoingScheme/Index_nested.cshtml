@@ -1,0 +1,140 @@
+﻿@model IEnumerable<MGNREGA.Models.Data.completeentry>
+@{
+    ViewBag.Title = "Monthly Progress Ongoing Road";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/OngoingScheme">Ongoing Scheme</a></li>
+        <li class="breadcrumb-item active">Index</li>
+    </ol>
+
+
+}
+<div id="example" class="container">
+    <div id="app">
+        <v-app id="inspire">
+            <v-data-table :headers="headers"
+                          :items="data"
+                          :single-expand="singleExpand"
+                          :expanded.sync="expanded"
+                          item-key="ceid"
+                          show-expand
+                          class="elevation-1">
+                <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-toolbar-title>Expandable Table</v-toolbar-title>
+                        <v-spacer></v-spacer>
+
+                    </v-toolbar>
+                </template>
+                <template v-slot:expanded-item="{headers,item}">
+                    <td :colspan="8">
+                        @*More info about {{ item.roadphysicals }}*@
+                        <table class="table table-bordered table-striped Items">
+                            <tr>
+                                <th>SANCTION YEAR</th>
+                                <th>MONTH</th>
+                                <th>EARTH WORK</th>
+                                <th>GSB</th>
+                                <th>WBM GRADE II</th>
+                                <th>WBM GRADE III</th>
+                                <th>BUSG</th>
+                                <th>PMC</th>
+                            </tr>
+                            
+
+                            <tr v-for="i in item.roadphysicals">
+                                <td>{{i.sanction_year }}</td>
+                                <td>{{i.month }}</td>
+                                <td>{{i.earthwork }}</td>
+                                <td>{{i.gsb }}</td>
+                                <td>{{i.wbmgradetwo }}</td>
+                                <td>{{i.wbmgradethree }}</td>
+                                <td>{{i.busg }}</td>
+                                <td>{{i.pmc }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </template>
+            </v-data-table>
+        </v-app>
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/vuetify/vuetify.min.js"></script>
+
+    <link href="~/Scripts/vuetify/vuetify.css" rel="stylesheet" />
+    <link href="~/Scripts/vuetify/vuetify.min.css" rel="stylesheet" />
+    <script src="~/Scripts/axios/axios.js"></script>
+    <style>
+        .v-icon::after{
+            content:'Expand'!important
+        }
+
+        .v-data-table__expand-icon{
+            padding:20px;
+            background-color:red;
+        }
+    </style>
+   
+    <script>
+
+       
+        Vue.use(Vuetify)
+        var app = new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: {
+                expanded: [],
+                singleExpand: false,
+                headers: [{
+                    text: 'division', value: 'division'
+                },
+                    { text: 'subdivision', value: 'subdivision' },
+                    { text: 'Recommended by', value: 'recommendedby' },
+                    { text: 'MLA/MP Name', value: 'mlampname' },
+                    { text: 'Sanction year', value: 'sanction_year' },
+                    { text: 'Scheme Name', value: 'schemename' },
+
+                { text: '--', value: 'data-table-expand' }],
+                data: []
+            },
+            mounted() {
+                axios.get('/api/completeentry').then(data => {
+
+                    this.data = data.data;
+                })
+            }
+        })
+
+
+
+            //var table = new nestedTables.TableHierarchy("example", dataInJson, settings);
+            //table.initializeTableHierarchy();
+            //$(function () {
+            //    $.get('/api/completeentry', function (data) {
+
+
+            //        var settings = {
+            //            iDisplayLength: 20,
+            //            bLengthChange: false,
+            //            bFilter: false,
+            //            bSort: false,
+            //            bInfo: false
+
+            //        };
+            //        var table = new nestedTables.TableHierarchy(
+            //            'example',
+            //            data,
+            //            settings
+            //        );
+            //        table.initializeTableHierarchy();
+            //    })
+            //});
+    </script>
+}

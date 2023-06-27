@@ -1,0 +1,125 @@
+﻿@using MLAFund.Models
+
+@{
+    ViewBag.Title = "Convergence New Entry Form";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@*@section bc{
+
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/convergence">convergence</a></li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+
+
+    }*@
+<div class="col-md-12 col-lg-12" id="app" v-cloak>
+    <div class="card card-secondary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Add New User
+            </h3>
+        </div>
+        <div class="card-body">
+            
+            <div class="container mb-3">
+                <div class="row ">
+                    <div class="col-md-6 align-items-center pr-7">
+                        <img src="~/Content/Mobile-login.jpg" style="width: 500px; height: 500px"class="pt-2" alt="Registration Image" />
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">District</label>
+                            <select name="district" v-model="tbl_Users.district" class="form-control" @@change="FillDepartment()" v-validate="'required'" ref="district">
+                                <option v-for="d in districtList" v-bind:value="d.district_name">
+                                    {{d.district_name}}
+                                </option>
+                            </select>
+                            <span style="color:red">{{ errors.first('district') }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Department</label>
+                            <select name="district" v-model="tbl_Users.dpt_name" class="form-control" v-validate="'required'" ref="department">
+                                <option v-for="d in departmentList" v-bind:value="d.DepartmentName">
+                                    {{d.DepartmentName}}
+                                </option>
+                            </select>
+                            <span style="color:red">{{ errors.first('Department Name') }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="NameOfUser">Name</label>
+                            <input type="text" required class="form-control" placeholder="Enter Name" v-model="tbl_Users.name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Username">Username</label>
+                            <input type="text" required class="form-control" placeholder="Enter New Username" v-model="tbl_Users.username" />
+                        </div>
+                        <div class="form-group">
+                            <label for="UserPassword">Password</label>
+                            <input type="password" required class="form-control" placeholder="Enter Password" v-model="tbl_Users.password" />
+                        </div><div class="form-group">
+                            <label for="UserRemarks">Remarks</label>
+                            <textarea type="text" required class="form-control" placeholder="Enter Remarks" v-model="tbl_Users.remarks"></textarea>
+                        </div>
+                        
+                        <div>
+                            <!--Submit buttons-->
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">@Session["district"]</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <!-- form start -->
+
+
+                                <div class="box-footer">
+                                    @*<input type="button" value="Submit" class="btn btn-primary" @@click="saveData()" />*@
+
+                                    <button type="button" class="btn btn-primary" @@click="saveData()" v-bind:disabled="busy">
+                                        <i class="fas fa-spinner fa-spin" v-if="busy"></i>
+                                        Submit
+                                    </button>
+                                   @* <a href="@Url.Action("Home","Index")" class="btn btn-success">View</a>*@
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger", @required = "true" })
+                                    <div class="pad margin no-print">
+
+                                        @ViewBag.Msg
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- /.card-header -->
+        <!-- form start -->
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/vee-validate/vee-validate.min.js"></script>
+    <script>Vue.use(VeeValidate);</script>
+    <script src="~/Scripts/apps/AddUser.js"></script>
+}
+
+
+
+
+
+

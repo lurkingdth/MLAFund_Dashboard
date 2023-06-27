@@ -1,0 +1,330 @@
+﻿@model IEnumerable<MLAFund.Models.Data.mla_expenses>
+
+@{
+    ViewBag.Title = "Fund Utilization Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="Home/Index">Home</a></li>
+        <li class="breadcrumb-item active">Index</li>
+    </ol>
+}
+
+<div class="col-md-12 col-lg-12">
+    <div class="card card-dark">
+        <div class="card-header">
+            <h3 class="card-title">MLA Fund Utilization Report</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="expenseassemblyName">Assembly Name</label>
+                        <input name="expenseassemblyName" type="text" class="form-control" value="@ViewBag.AssemblyName" disabled />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="mlaNames">Rept. MLA Name</label>
+                        <input name="mlaNames" type="text" class="form-control" value="@ViewBag.MLAName" disabled />
+                    </div>
+                </div>
+            </div>
+
+                <table id="mlafund_utilization_report" class="table Items table-bordered table-responsive">
+                    <thead>
+                        <tr class="bg-secondary">
+                            <th style="width: 1%">Sr. No</th>
+                            <th>Financial Year</th>
+                            <th>Expense Details</th>
+                            <th>Expense Amount</th>
+                            <th>Bill Uploaded</th>
+                        </tr>
+                    </thead>
+
+                    @if (Model != null)
+                    {
+
+                        //  var SNo = 1;
+                        ////  var s = 0;
+                        <tbody>
+
+                            @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                            {
+
+                                <tr>
+                                    <td>@item.it</td>
+                                    <td>@item.i.financial_year</td>
+                                    <td>@item.i.expense_detail</td>
+                                    <td>@item.i.expense_amount</td>
+                                    <td>@item.i.expense_doc</td>
+                                </tr>
+
+                                /** This code is commented as we donot have to put in expanded rows for work progress details.
+                                if (item.i.convergencedpt.Count > 0)
+                                {
+                                    <tr>
+                                        <th colspan="11"></th>
+                                        <th style="background-color:#A3A6A6" class="text-white">Convergence Department Name</th>
+                                        <th style="background-color:#A3A6A6" class="text-white">Convergence Department Scheme</th>
+                                        <th style="background-color:#A3A6A6" class="text-white">Convergence Fund</th>
+                                        <th style="background-color:#A3A6A6" class="text-white">Add/Update Fund</th>
+                                    </tr>
+                                    foreach (var i in item.i.convergencedpt)
+                                    {
+
+                                        <tr>
+                                            <td colspan="11"></td>
+
+                                            <td>@i.convergencedptname</td>
+                                            <td>@i.convergencedptscheme</td>
+                                            <td>@i.convergencefund</td>
+                                            <td>
+                                                @* Button for Modal Popup - For Adding convergence Fund *@
+                                                <button type="button" class="btn btn-info open_modal_btn" popupCid ="@item.i.cid" popupDistrict="@item.i.district" popupNameOfScheme="@item.i.nameofscheme"
+                                                        popupTotaFund="@item.i.totalfund" popupConvergenceFund="@i.convergencefund" popupStatus ="@item.i.status"
+                                                        popupConvergenceDeptName="@i.convergencedptname" popupConvergenceDeptScheme ="@i.convergencedptscheme"
+                                                         id="addConvergenceFund">
+                                                    Add Fund
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                } **/
+                            }
+                        </tbody>
+                    }
+
+
+                </table>
+
+                @* Modal PopUp for Adding Funds - Start *@
+
+
+
+                <div class="modal fade" id="convergenceFundModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Add Convergence Fund</h4>
+                                <button type="button" class="close" data-dismiss="modal">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="post" id="addConvergenceFund">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+
+                                                <label for="popup_district">District</label>
+                                                <input type="text" min="0" max="1500" id="popup_district" required class="form-control" disabled />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="popup_nameOfScheme">Name of Scheme</label>
+                                                <input type="text" min="0" max="1500" id="popup_nameOfScheme" required class="form-control" disabled />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="popup_totalFund">Total Fund</label>
+                                                <input type="number" min="0" max="1500" id="popup_totalFund" required class="form-control" disabled />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="popup_convergenceFund">Add Convergence Fund</label>
+                                                <input type="number" min="0" max="1500" id="popup_convergenceFund" required class="form-control" />
+                                            </div>
+                                        </div>
+                                        <!--Hidden Feilds : Added - MNGREGA Convergence-->
+                                        <input id="popup_convergenceCid" class="form-control" type="hidden" />
+                                        @*<input id="popup_convergenceStatus" class="form-control" type="hidden" />*@
+                                        <input id="popup_convergenceDeptName" class="form-control" type="hidden" />
+                                        <input id="popup_convergenceDeptSchemeName" class="form-control" type="hidden" />
+
+
+                                        <!--Hidden Feilds : Added - MNGREGA Convergence-->
+
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-success" id="popup_btnSubmit">Submit</button>
+                                            @*<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>*@
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* Modal PopUp for Adding Funds - End *@
+
+        </div>
+        </div>
+
+
+
+
+    @section scripts{
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+        <!--Added Script for Modal Popup-->
+        <script>
+            $("document").ready(function () {
+                $(".open_modal_btn").click(function () {
+                    $("#convergenceFundModal").modal("show");
+                    var cid = $(this).attr("popupCid");
+                    var district = $(this).attr("popupDistrict");
+                    var nameOfScheme = $(this).attr("popupNameOfScheme");
+                    //var status = $(this).attr("popupStatus");
+                    var totalFund = $(this).attr("popupTotaFund");
+                    var convergenceFund = $(this).attr("popupConvergenceFund");
+                    var convergenceDeptName = $(this).attr("popupConvergenceDeptName");
+                    var convergenceDeptScheme = $(this).attr("popupConvergenceDeptScheme");
+
+                    //Binding values to Popup Fields
+                    $("#popup_district").val(district);
+                    $("#popup_nameOfScheme").val(nameOfScheme);
+                    $("#popup_totalFund").val(totalFund);
+                    $("#popup_convergenceFund").val(convergenceFund);
+                    $("#popup_convergenceCid").val(cid);
+                    //$("#popup_convergenceStatus").val(status);
+                    $("#popup_convergenceDeptName").val(convergenceDeptName);
+                    $("#popup_convergenceDeptSchemeName").val(convergenceDeptScheme);
+
+
+                })
+            });
+        </script>
+        <!--Added Script for Modal Popup-->
+        <!--Nishant : Code Start : Added Code for Saving Convergence Fund through Modal PopUp-->
+
+        <script>
+        $("document").ready(function () {
+            $("#popup_btnSubmit").click(function () {
+                //alert("Modal is clicked");
+                var cid = $("#popup_convergenceCid").val();
+                //var status = $("#popup_convergenceStatus").val();
+                var convergenceFund = $("#popup_convergenceFund").val();
+                var convergenceDeptName = $("#popup_convergenceDeptName").val();
+                var convergenceDeptScheme = $("#popup_convergenceDeptSchemeName").val();
+
+                $.ajax({
+                    url: '@Url.Action("AddConvergenceFund", "Convergence")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        popup_cid: cid,
+                        //popup_status: status,
+                        popup_convergenceFund: convergenceFund,
+                        popup_convergenceDeptName: convergenceDeptName,
+                        popup_convergenceDeptScheme: convergenceDeptScheme,
+                        },
+
+                    success: function (response) {
+                    if (response.success) {
+                        $("#convergenceFundModal").modal("hide");
+                        window.location.reload();
+                        alert("Data Saved Successfully");
+
+                    } else {
+                    // DoSomethingElse()
+                    alert(response.responseText);
+                    }
+                    },
+                    error: function (response) {
+                    alert("error!");  //
+                    }
+                    });
+
+            });
+        });
+        </script>
+        <!--Nishant : Code End : Added Code for Saving Convergence Fund through Modal PopUp-->
+        <!--Nishant : Code Start: Added Code for Datatables-->
+        <script>
+            /* The below code was for exporting table data to an excel */
+            /*
+           function ExportToExcel(type, fn, dl) {
+                var elt = document.getElementById('mlafund_utilization_report');
+                var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+                return dl ?
+                    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                    XLSX.writeFile(wb, fn || ('MLAFund Utilization Report.' + (type || 'xlsx')));
+            }
+            */
+            $(document).ready(function () {
+                var table = $('#mlafund_utilization_report',).DataTable({
+                    //Toggle the below paging to false - to remove pagination
+                    pageLength: 5,
+                    paging: true,
+
+                    //Nishant Code Start - Code Add for Exporting to PDF
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            orientation: 'landscape',
+                            title: 'MLA Fund Utilization Report',
+                            pageSize: 'A4',
+                            text: 'Export to Excel'
+                        }
+                    ]
+                    //Code End - Code Added for File Export to PDF
+
+                });
+
+                $('a.toggle-vis').on('click', function (e) {
+                    e.preventDefault();
+
+                    // Get the column API object
+                    var column = table.column($(this).attr('data-column'));
+
+                    // Toggle the visibility
+                    column.visible(!column.visible());
+                });
+            });
+        </script>
+        <!--Nishant : Code Start: Added Code for Datatables-->
+
+        <script>
+        function FillBlock() {
+
+            var district_selected = $('#district').val();
+
+            alert(district_selected);
+
+             $.ajax({
+                 url: '@Url.Action("MLAFund_Utilization_Report", "Convergence")',
+                type: "GET",
+                dataType: "JSON",
+                 data: { sno: district_selected },
+            });
+            }
+        </script>
+
+
+
+        <script src="~/Scripts/axios/axios.min.js"></script>
+        <script src="~/Scripts/vue/vue.min.js"></script>
+        <script src="~/Scripts/vee-validate/vee-validate.min.js"></script>
+        <script>Vue.use(VeeValidate);</script>
+        <script src="~/Scripts/apps/MLAExpense.js"></script>
+    }
+
+

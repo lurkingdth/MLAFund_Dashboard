@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap-vue@2.21.2",
+      "destination": "Scripts/bootstrap-vue/"
+    },
+    {
+      "library": "vuetify@2.5.8",
+      "destination": "Scripts/vuetify/"
+    },
+    {
+      "library": "vee-validate@2.2.15",
+      "destination": "Scripts/vee-validate/"
+    }
+  ]
+}

@@ -1,0 +1,431 @@
+﻿
+
+@{
+    ViewBag.Title = "Ongoing Bridge Scheme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/CompletedBridge">Ongoing Bridge Scheme</a></li>
+        <li class="breadcrumb-item active">Create</li>
+    </ol>
+
+
+}
+<div class="col-md-12 col-lg-12" id="app" v-cloak>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Add New Ongoing Bridge Scheme
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row ">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Circle</label>
+                        <select name="division" v-model="ongoing_bridge.division" class="form-control" required @@change="FillSubdivision()">
+                            <option v-bind:value="null">Select </option>
+                            <option v-for="d in divisionlist" v-bind:value="d.division_name">
+                                {{d.division_name}}
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Division</label>
+                        <select name="subdivision" v-model="ongoing_bridge.subdivision" class="form-control" required>
+                            <option v-for="d in subdivisionList" v-bind:value="d.sub_division_name">
+                                {{d.sub_division_name}}
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">District</label>
+                        <select name="district" v-model="ongoing_bridge.district" class="form-control" @@change="FillBlock()" required>
+                            <option v-for="d in districtList" v-bind:value="d.district_name">
+                                {{d.district_name}}
+                            </option>
+                        </select>
+
+
+
+
+
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Block</label>
+                        <select name="block" v-model="ongoing_bridge.block" class="form-control" @@change="FillPanchayat()" required>
+                            <option v-for="d in blocklist" v-bind:value="d.block_name">
+                                {{d.block_name}}
+                            </option>
+                        </select>
+
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Panchayat</label>
+                        <select name="panchayat" v-model="ongoing_bridge.panchayat" class="form-control" @@change="FillVillage()" required>
+                            <option v-for="d in panchayatList" v-bind:value="d.panchayat_name">
+                                {{d.panchayat_name}}
+                            </option>
+                        </select>
+
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Village</label>
+
+                        <select name="panchayat" v-model="ongoing_bridge.village" class="form-control" @@change="FillVillage()" required>
+                            <option v-for="j in villageList" v-bind:value="j.village_name">
+                                {{j.village_name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <h4>Basic Details</h4>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Scheme Name/Bridge Name</label>
+
+                        <input type="text" required class="form-control" v-model="ongoing_bridge.schemename" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Recoomended By(MLA/MP or Administrative Ground)</label>
+                        <select class="form-control select2" v-model="ongoing_bridge.recommendedby">
+                            <option value="Administrative">Administrative</option>
+                            <option value="Honorable MP">Honorable MP</option>
+                            <option value="Honorable MLA">Honorable MLA</option>
+                        </select>
+
+
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of MLA/MP or Administrative Ground</label>
+
+                        <input type="text" required class="form-control" v-model="ongoing_bridge.mlampname" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Constituency</label>
+                        <select name="assembly" v-model="ongoing_bridge.nameofconsti" class="form-control" required>
+                            <option v-bind:value="null">Select </option>
+                            <option v-for="d in assemblylist" v-bind:value="d.assembly">
+                                {{d.assembly}}
+                            </option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Sanction Year</label>
+                        <select class="form-control select2" v-model="ongoing_bridge.sanction_year">
+                            @for (var i = 2001; i <= DateTime.Now.Year; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+
+
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Consultancy</label>
+                        <select class="form-control select2" v-model="ongoing_bridge.consultancy_name">
+                            <option value="Asha Engineering Consultant">Asha Engineering Consultant</option>
+                            <option value="Archit Consultant">Archit Consultant</option>
+                            <option value="Ranchi Design & Consultancy Services Pvt. Ltd.">Ranchi Design & Consultancy Services Pvt. Ltd.</option>
+                            <option value="Sparsh Engineering">Sparsh Engineering</option>
+                            <option value="Universal Engineering Group">Universal Engineering Group</option>
+                            <option value="Smiton Project Pvt. Ltd.">Smiton Project Pvt. Ltd.</option>
+                            <option value="Rankine Techno Consultancy Pvt. Ltd.">Rankine Techno Consultancy Pvt. Ltd.</option>
+                            <option value="Dynamic Project 196 AG Arabinda Sarani Kolakata">Dynamic Project 196 AG Arabinda Sarani Kolakata</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Type of Foundation</label>
+                        <select class="form-control select2" v-model="ongoing_bridge.type_of_foundation">
+                            <option value="Open">Open</option>
+                            <option value="Pile">Pile</option>
+                            <option value="Both Open and pile">Both Open and pile</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Length of Approach Road</label>
+
+                        <input type="number" min="0" max="1500" required class="form-control" v-model="ongoing_bridge.lengthof_approach_road" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Length of Retaining Wall/Guard Wall</label>
+
+                        <input type="number" min="0" max="1500" required class="form-control" v-model="ongoing_bridge.lengthof_retainingwall" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">if in case of Deviation(Increased Amount)</label>
+                        <input type="number" min="0" max="100" required class="form-control" v-model="ongoing_bridge.amount_increase" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">if in case of Deviation(Decresed Amount)</label>
+                        <input type="number" min="0" max="100" required class="form-control" v-model="ongoing_bridge.amount_decrease" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Reason of Deviation</label>
+
+                        <input type="text" required class="form-control" v-model="ongoing_bridge.reasonofdeviation" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Number of Abutment Sanctioned</label>
+                        <input type="number" min="0" max="100" required class="form-control" v-model="ongoing_bridge.sanction_aboutment" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Number of Pier Sanctioned</label>
+                        <input type="number" min="0" max="100" required class="form-control" v-model="ongoing_bridge.sanction_pier" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Number of Slab Sanctioned</label>
+                        <input type="number" min="0" max="100" required class="form-control" v-model="ongoing_bridge.sanction_slab" />
+
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Length of Bridge(in meter)</label>
+
+                        <input type="number" min="0" max="1500" required class="form-control" v-model="ongoing_bridge.lengthofbridge" />
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Type of Head</label>
+                        <select class="form-control select2" v-model="ongoing_bridge.type_of_head">
+                            <option value="TSP">TSP</option>
+                            <option value="OSP">OSP</option>
+                            <option value="SCSP">SCSP</option>
+                        </select>
+                    </div>
+                </div>
+              
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Amount of Administrative Approval</label>
+
+                        <input type="number" required class="form-control" v-model="ongoing_bridge.administrativesanctionamount" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Refrence of Administrative Approval</label>
+
+                        <input type="text" required class="form-control" v-model="ongoing_bridge.refadministrativeapproval" />
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Name of Contractor</label>
+
+                        <input type="text" required class="form-control" v-model="ongoing_bridge.contractorname" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Registration No. of Contractor</label>
+
+                        <input type="text" required class="form-control" v-model="ongoing_bridge.regidcontractor" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Agreement</label>
+                        <input type="date" required class="form-control" value="dd-mm-yyyy" min="1997-01-01" max="2030-12-31" v-model="ongoing_bridge.dateofagreement">
+
+                        @*<input type="date" required class="form-control" v-model="ongoing_bridge.dateofagreement" />*@
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Agreement Number</label>
+
+                        <input type="text" required class="form-control" v-model="ongoing_bridge.agreementnumber" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Agreement Amount</label>
+
+                        <input type="number" required class="form-control" v-model="ongoing_bridge.agreementamount" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Completion As per Agreement</label>
+
+                        <input type="date" required class="form-control" v-model="ongoing_bridge.dateofcompletionasperagreement" />
+                    </div>
+                </div>
+                @*<div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Date of Actual Completion</label>
+
+                <input type="date" required class="form-control" v-model="ongoing_bridge.dateofcompletionactual" />
+            </div>
+        </div>*@
+
+                @*<div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleInputPassword1">Total Expenditure</label>
+
+                <input type="Number" required class="form-control" v-model="ongoing_bridge.totalexpenditure" />
+            </div>
+        </div>*@
+
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">@Session["district"]</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+
+                        <div class="box-body">
+
+                            <!---wizard-->
+                            <!---end wizard-->
+                            <hr />
+
+
+                        </div>
+                        <!-----boxend-->
+                        <div class="box-body">
+
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">PDF Upload</label>
+                                    <input type="file" id="filename_c" value="No Files Chosen" ref="gg" />
+                                    @*<input type="button" id="btnUpload" value="Upload PDF" class="btn btn-info" />*@
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Remarks</label>
+                                    @*@Html.EditorFor(model => model.remark, new { htmlAttributes = new { @class = "form-control", @onkeyup = "NetWt()", @required = "true" } })
+                            @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                                    <input type="text" required class="form-control" v-model="ongoing_bridge.remark" />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <input type="button" value="Submit" class="btn btn-primary" @@click="saveData()" />
+                            <a href="@Url.Action("OngoingBridgeScheme", "Create")" class="btn btn-success">View</a>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger", @required = "true" })
+                            <div class="pad margin no-print">
+
+                                @ViewBag.Msg
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+
+        <!-- /.card-header -->
+        <!-- form start -->
+
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="~/Scripts/axios/axios.min.js"></script>
+    <script src="~/Scripts/vue/vue.min.js"></script>
+    <script src="~/Scripts/apps/OngoingBridgeScheme.js"></script>
+}
+
+
+
+
+
+

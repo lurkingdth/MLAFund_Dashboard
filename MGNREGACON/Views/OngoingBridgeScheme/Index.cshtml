@@ -1,0 +1,308 @@
+﻿@model IEnumerable<MGNREGA.Models.Data.ongoing_bridge>
+@{
+    ViewBag.Title = "Ongoing Bridge Scheme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/OngoingScheme">Ongoing Bridge Scheme</a></li>
+        <li class="breadcrumb-item active">Ongoing Bridge Scheme</li>
+    </ol>
+
+
+}
+<div class="col-md-12 col-lg-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Ongoing Bridge Scheme  (
+                @Html.ActionLink("Create New", "Create"))
+            </h3>
+        </div>
+        <table id="example1" class="table table-bordered table-striped Items">
+            <thead>
+                <tr>
+
+                    <th>SNo</th>
+                    <th>Division</th>
+                    <th>Subdivision</th>
+                    <th>District</th>
+                    <th>Block</th>
+                    <th>Panchayat</th>
+                    <th>Recommended By</th>
+                    <th>Sanction Year</th>
+                    <th>Scheme Name</th>
+                    <td>Monthly Progress Report</td>
+                </tr>
+            </thead>
+
+            @if (Model != null)
+            {
+
+                //  var SNo = 1;
+                ////  var s = 0;
+                <tbody>
+
+                    @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                    {
+
+                        <tr>
+
+                            <td>@item.it</td>
+                            <td>@item.i.division</td>
+                            <td>@item.i.subdivision</td>
+                            <td>@item.i.district</td>
+                            <td>@item.i.block</td>
+                            <td>@item.i.panchayat</td>
+                            <td>@item.i.recommendedby</td>
+                            <td>@item.i.sanction_year</td>
+                            <td>@item.i.schemename</td>
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.i.ceid" popupdis="@item.i.district" popupblk="@item.i.block" popuppan="@item.i.panchayat" popupmla="@item.i.mlampname" popupconsti="@item.i.nameofconsti" popupschemetype="@item.i.typeofscheme">Monthly Progress</button></td>*@
+                            <td><button type="button" class="clickme" id="myBtn" popupid="@item.i.bridge_ongoing_id">Monthly Progress</button></td>
+                        </tr>
+                    }
+
+                </tbody>
+            }
+
+
+        </table>
+    </div>
+    <div class="modal fade" id="mydetailModal3" role="dialog">
+        <div class="modal-dialog">
+            <form action='' method='post'>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Monthly Report</h4>
+
+                    </div>
+                    <div class="modal-body" id='myModalContent112'>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Year</label>
+                                    <select class="form-control select2" id="financial_year_mpid">
+                                        @for (var i = 2001; i <= DateTime.Now.Year; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <input type="hidden" class="form-control" id="txtname" placeholder="id" required>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputEmail1">Month</label>
+                                    <select class="form-control" id="monthid">
+                                        <option value="January">January</option>
+                                        <option value="February">February</option>
+                                        <option value="March">March</option>
+                                        <option value="April">April</option>
+                                        <option value="May">May</option>
+                                        <option value="June">June</option>
+                                        <option value="July">July</option>
+                                        <option value="August">August</option>
+                                        <option value="September">September</option>
+                                        <option value="October">October</option>
+                                        <option value="November">November</option>
+                                        <option value="December">December</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <h2 class="modal-title">Physical Progress</h2>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Abutment(in No.)</label>
+
+                                    <input type="number" min="0" max="1500" id="aboutmentid" required class="form-control" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Pier(in No.)</label>
+                                    <input type="number" min="0" max="1500" id="pierid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">slab(in No.)</label>
+                                    <input type="number" min="0" max="1500" id="slabid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <h2 class="modal-title">Financial Progress</h2>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Allotment Release in Current Month</label>
+                                    <input type="number" min="0" max="1500" id="allotmentrelease_current_monthid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Expenditure in Current Month</label>
+                                    <input type="number" min="0" max="1500" id="expenditure_current_monthid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Physical Progress(in %)</label>
+                                    <input type="number" min="0" max="1500" id="physical_progress_current_monthid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Financial Progress(in %)</label>
+                                    <input type="number" min="0" max="1500" id="physical_progress_current_monthid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label for="exampleInputPassword1">Remarks</label>
+                                    <input type="text" id="remarksid" required class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success" id="btnsub">Submit</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".clickme").click(function () {
+               // alert("test");
+                $('#mydetailModal3').modal('show');
+                var pid = $(this).attr("popupid");
+                //var dis = $(this).attr("popupdis");
+                //var blk = $(this).attr("popupblk");
+                //var pan = $(this).attr("popuppan");
+                //var mla = $(this).attr("popupmla");
+                //var consti = $(this).attr("popupconsti");
+                $("#txtname").val(pid);
+                //$("#txtdis").val(dis);
+                //$("#txtblk").val(blk);
+                //$("#txtpan").val(pan);
+                //$("#txtmlaname").val(mla);
+                //$("#txtconsti").val(consti);
+            });
+
+        });
+    </script>
+    <script>
+    $('#btnsub').click(function () {
+        //alert("text2");
+        var txtid = $("#txtname").val();
+        //alert(txtid);
+        var financial_year_mp = $("#financial_year_mpid").val();
+        //alert(financial_year_mp);
+        var month = $("#monthid").val();
+       // alert(month);
+        var aboutment = $("#aboutmentid").val();
+       // alert(aboutment);
+        var pier = $("#pierid").val();
+        //alert(pier);
+        var slab = $("#slabid").val();
+       // alert(slab);allotmentrelease_current_monthid
+        var expenditure_current_month = $("#expenditure_current_monthid").val();
+        var allotmentrelease_current_month = $("#allotmentrelease_current_monthid").val();
+        //alert(expenditure_current_month);
+        var physical_progress_current_month = $("#physical_progress_current_monthid").val();
+        var financial_progress_current_month = $("#financial_progress_current_monthid").val();
+        //alert(physical_progress_current_month);
+        var remarks = $("#remarksid").val();
+        alert(remarks);
+        var submittedby = "Admin";
+                //var window.location.reload();
+                if (txtid == '' ||
+                    financial_year_mp == ''
+
+                            ) {
+                    alert('Please fill required fields*');
+                    return false;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("Monthly_Report", "OngoingBridgeScheme")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        
+                        vcb_bridge_ongoing_id: txtid
+                        , vcb_financial_year_mp: financial_year_mp
+                        , vcb_month: month
+                        , vcb_aboutment: aboutment
+                        , vcb_pier: pier                        , vcb_slab: slab
+                        , vcb_allotmentrelease_current_month: allotmentrelease_current_month
+                        , vcb_expenditure_current_month: expenditure_current_month
+                        , vcb_physical_progress_current_month: physical_progress_current_month
+                        , vcb_financial_progress_current_month: financial_progress_current_month
+                        , vcb_remarks: remarks
+                        , vcb_submittedby: submittedby
+                        },
+
+                    success: function (response) {
+                    if (response.success) {
+                        $("#mydetailModal3").modal("hide");
+                       // url: "master/viewchangestatus_ffc",
+                        window.location.reload();
+                        //var sid = "#status_" + txtid;
+                        alert(sid);
+                     var label = $(this).parent().find(sid);
+
+                    label.html = "testl-";
+                    } else {
+                    // DoSomethingElse()
+                    alert(response.responseText);
+                    }
+                    },
+                    error: function (response) {
+                    alert("error!");  //
+                    }
+                    });
+
+
+
+                    });
+    </script>
+    }

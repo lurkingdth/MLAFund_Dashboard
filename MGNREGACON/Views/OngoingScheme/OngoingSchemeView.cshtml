@@ -1,0 +1,139 @@
+﻿@model IEnumerable<MGNREGA.Models.Data.completeentry>
+
+@{
+    ViewBag.Title = "Ongoing Scheme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section bc{
+
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="/CompletedScheme">Ongoing Scheme</a></li>
+        <li class="breadcrumb-item active">Index</li>
+    </ol>
+
+
+}
+
+<div class="col-md-12 col-lg-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">
+                Completed Schemes  (
+                @Html.ActionLink("Create New", "Create"))
+            </h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+
+
+
+
+        <table id="example1" class="table table-bordered table-striped Items table-responsive">
+            <thead>
+                <tr>
+
+                    <th>SNo</th>
+                    <th>Division</th>
+                    <th>Subdivision</th>
+                    <th>District</th>
+                    <th>Block</th>
+                    <th>Panchayat</th>
+                    <th>Recommended By</th>
+                    <th>Sanction Year</th>
+                    <th>Scheme Name</th>
+                    <th>Total administrative sanctiona mount</th>
+                    <th>sanction_year     </th>
+                    <th>month             </th>
+                    <th>roadbridgelenghth </th>
+                    <th>earthwork         </th>
+                    <th>gsb               </th>
+                    <th>wbmgradetwo       </th>
+                    <th>wbmgradethree     </th>
+                    <th>busg              </th>
+                    <th>pmc               </th>
+                    <th>pcc               </th>
+                    <th>cd                </th>
+                    <th>gw                </th>
+                    <th>drain             </th>
+                    <th>physicalpercent   </th>
+                    <th>totexpenditure    </th>
+
+
+                </tr>
+            </thead>
+
+            @if (Model != null)
+            {
+
+                //  var SNo = 1;
+                ////  var s = 0;
+                <tbody>
+
+                    @foreach (var item in Model.Select((i, it) => new { i, it = it + 1 }))
+                    {
+
+                        <tr>
+
+                            <td>@item.it</td>
+                            <td>@item.i.division</td>
+                            <td>@item.i.subdivision</td>
+                            <td>@item.i.district</td>
+                            <td>@item.i.block</td>
+                            <td>@item.i.panchayat</td>
+                            <td>@item.i.recommendedby</td>
+                            <td>@item.i.sanction_year</td>
+                            <td>@item.i.schemename</td>
+                            <td>@item.i.administrativesanctionamount</td>
+
+                            @*<td><button type="button" class="clickme" id="myBtn" popupid="@item.recid">Assign to EE for Feasibility</button></td>*@
+
+                        </tr>
+                        if (item.i.roadphysicals.Count > 0)
+                        {
+                            foreach (var i in item.i.roadphysicals)
+                            {
+                <tr>
+                                <td colspan="10"></td>
+                                <td>@i.sanction_year     </td>
+                                <td>@i.month             </td>
+                                <td>@i.roadbridgelenghth </td>
+                                <td>@i.earthwork         </td>
+                                <td>@i.gsb               </td>
+                                <td>@i.wbmgradetwo       </td>
+                                <td>@i.wbmgradethree     </td>
+                                <td>@i.busg              </td>
+                                <td>@i.pmc               </td>
+                                <td>@i.pcc               </td>
+                                <td>@i.cd                </td>
+                                <td>@i.gw                </td>
+                                <td>@i.drain             </td>
+                                <td>@i.physicalpercent   </td>
+                                <td>@i.totexpenditure    </td>
+                </tr>
+                            }
+
+                        }
+
+
+
+                        //  s = s + Convert.ToInt32(item.totalapp);
+
+                    }
+
+                </tbody>
+                //  Session["tapp"] =s;
+
+
+
+
+            }
+
+
+        </table>
+    </div>
+</div>
+
+
+
+
